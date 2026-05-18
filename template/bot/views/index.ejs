@@ -1,73 +1,38 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Report to Admin Bot</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-      crossorigin="anonymous"
-    />
-    <style></style>
+    <style>:root{color-scheme:dark;color:#eee}body{margin:0;background:#111}main{width:min(100% - 32px,960px);margin:0 auto;padding:48px 0}h1{text-align:center}form{display:flex}.prefix,input,button{padding:10px 12px;border:1px solid #456;font:inherit}.prefix{border-radius:6px 0 0 6px;background:#123;white-space:nowrap}input{min-width:0;flex:1;background:#111}button{border-radius:0 6px 6px 0;background:#26e;color:#fff;cursor:pointer}</style>
   </head>
-  <body class="">
-    <div class="container mt-5 p-4">
-      <div class="row">
-        <div class="col-md-12">
-          <h1 class="text-center mb-4">Report to Admin Bot</h1>
-          <h2 class="h4 mt-4">URL: (<code>APP_URL = <%- APP_URL %></code>)</h2>
-          <form class="input-group mb-3" id="form">
-            <span class="input-group-text"><%- APP_URL %></span>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="login"
-              aria-label="ID"
-              id="path"
-            />
-            <button class="btn btn-primary" type="button" id="report">Report</button>
-          </form>
-          <p id="response"></p>
-        </div>
-      </div>
-    </div>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-      crossorigin="anonymous"
-    ></script>
+  <body>
+    <main>
+      <h1>Report to Admin Bot</h1>
+      <form id="form">
+        <span class="prefix"><%- APP_URL %></span>
+        <input type="text" placeholder="hello" id="path" />
+        <button type="submit" id="report">Report</button>
+      </form>
+      <p id="response"></p>
+    </main>
     <script>
-      function toggleDarkMode() {
-        if (
-          window.matchMedia &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches
-        ) {
-          document.documentElement.setAttribute("data-bs-theme", "dark");
-        } else {
-          document.documentElement.setAttribute("data-bs-theme", "light");
+      const $response = document.getElementById("response");
+      const $path = document.getElementById("path");
+      const $report = document.getElementById("report");
+
+      document.getElementById("form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const path = $path.value;
+        if (!path) {
+          $response.textContent = "Please enter a path";
+          return;
         }
-      }
 
-      window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .addEventListener("change", toggleDarkMode);
-
-      toggleDarkMode();
-      window.addEventListener("load", () => {
-
-        const $form = document.getElementById("form");
-        const $response = document.getElementById("response");
-        const $path = document.getElementById("path");
-
-        document.getElementById("report").addEventListener("click", async () => {
-          const path = $path.value;
-          if (!path) {
-            $response.textContent = "Please enter a path";
-            return;
-          }
-          $form.setAttribute("disabled", true);
+        try {
+          $path.disabled = true;
+          $report.disabled = true;
           $response.textContent = "Response from bot: " + await(await fetch("/api/report", {
             method: "POST",
             headers: {
@@ -75,9 +40,10 @@
             },
             body: JSON.stringify({ path }),
           })).text();
-          $form.setAttribute("disabled", false);
-
-        });
+        } finally {
+          $path.disabled = false;
+          $report.disabled = false;
+        }
       });
     </script>
   </body>

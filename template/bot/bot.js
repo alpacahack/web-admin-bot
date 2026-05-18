@@ -1,7 +1,7 @@
 import puppeteer from "puppeteer";
 
 const sleep = async (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const FLAG = process.env.FLAG ?? "Alpaca{REDACTED}";
+const FLAG = process.env.FLAG ?? "Alpaca{DUMMY}";
 const APP_URL = process.env.APP_URL ?? "http://localhost/";
 
 export const visit = async (url) => {

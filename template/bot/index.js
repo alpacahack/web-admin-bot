@@ -2,13 +2,11 @@ import express from "express";
 import rateLimit from "express-rate-limit";
 import { visit } from "./bot.js";
 
-const PORT = process.env.PORT ?? "1337";
 const APP_URL = process.env.APP_URL ?? "http://localhost/";
 
 const app = express();
-app.set("view engine", "ejs");
-
 app.use(express.json());
+app.set("view engine", "ejs");
 
 app.get("/", async (_req, res) => {
   return res.render("./index.ejs", { APP_URL });
@@ -38,6 +36,4 @@ app.post("/api/report", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Listening on http://localhost:${PORT}`);
-});
+app.listen(1337);
