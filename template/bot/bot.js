@@ -2,10 +2,10 @@ import puppeteer from "puppeteer";
 
 const sleep = async (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const FLAG = process.env.FLAG ?? "Alpaca{DUMMY}";
-const APP_URL = process.env.APP_URL ?? "http://localhost/";
+export const APP_URL = process.env.APP_URL ?? "http://localhost:3000/";
 
 export const visit = async (url) => {
-  console.log(`Start visiting: ${url} ${new URL(APP_URL).origin}`);
+  console.log(`Start visiting: ${url}`);
 
   const browser = await puppeteer.launch({
     headless: "new",
@@ -13,7 +13,6 @@ export const visit = async (url) => {
     executablePath: "/usr/bin/chromium",
     args: [
       "--no-sandbox",
-      "--disable-setuid-sandbox",
       "--disable-dev-shm-usage",
       "--disable-gpu",
       '--js-flags="--noexpose_wasm"',

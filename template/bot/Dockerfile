@@ -1,12 +1,10 @@
-FROM node:25.2.1-bookworm-slim
+FROM node:26.1.0-trixie-slim
 ENV PUPPETEER_SKIP_DOWNLOAD=true
-WORKDIR /app
+WORKDIR /bot
 
-RUN apt update && apt install -y chromium && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y chromium && rm -rf /var/lib/apt/lists/*
 COPY package*.json ./
-RUN npm i --omit=dev
-
+RUN npm ci --omit=dev
 COPY . .
 USER node
-
 CMD [ "node", "index.js" ]

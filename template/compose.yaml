@@ -1,10 +1,10 @@
 services:
-  # web:
-  #   build: ./web
-  #   restart: unless-stopped
-  #   init: true
-  #   ports:
-  #     - ${PORT_WEB:-3000}:3000
+  web:
+    build: ./web
+    restart: unless-stopped
+    init: true
+    ports:
+      - ${PORT_APP:-3000}:3000
 
   bot:
     build: ./bot

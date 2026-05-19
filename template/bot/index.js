@@ -1,8 +1,6 @@
 import express from "express";
 import rateLimit from "express-rate-limit";
-import { visit } from "./bot.js";
-
-const APP_URL = process.env.APP_URL ?? "http://localhost/";
+import { visit, APP_URL } from "./bot.js";
 
 const app = express();
 app.use(express.json());
@@ -36,4 +34,6 @@ app.post("/api/report", async (req, res) => {
   }
 });
 
-app.listen(1337);
+app.listen(1337, () => {
+  console.log('Server listening on port 1337');
+});
