@@ -10,13 +10,8 @@ app.get("/", async (_req, res) => {
   return res.render("./index.ejs", { APP_URL });
 });
 
-app.use(
-  "/api",
-  rateLimit({
-    windowMs: 60 * 1000,
-    max: 4,
-  })
-);
+// Limit each IP address to 4 requests per minute
+app.use("/api", rateLimit({ windowMs: 60 * 1000, max: 4 }));
 
 app.post("/api/report", async (req, res) => {
   const { path } = req.body;
@@ -24,7 +19,7 @@ app.post("/api/report", async (req, res) => {
     return res.status(400).send("Invalid path");
   }
   const url = APP_URL + path;
-  
+
   try {
     await visit(url);
     return res.send("OK");
